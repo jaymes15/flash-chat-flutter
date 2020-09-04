@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "687321070137",
+    "firebase_url": "https://flashchat1-89f5f.firebaseio.com",
+    "project_id": "flashchat1-89f5f",
+    "storage_bucket": "flashchat1-89f5f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687321070137:android:f0cb3e2d845dbd47ddabe8",
+        "android_client_info": {
+          "package_name": "co.james.flash_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "687321070137-febho8a6rpgreijvqrmh4kq27t4i534v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0xT2KTgJvy0t6vuobRCpjlTAh3FpSIJM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "687321070137-febho8a6rpgreijvqrmh4kq27t4i534v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
