@@ -1,10 +1,11 @@
 import 'dart:convert';
-
+import 'package:flash_chat/components/messagebubble.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flash_chat/components/messagestream.dart';
 
 class ChatScreen extends StatefulWidget {
   static String id = 'chat_screen';
@@ -17,6 +18,7 @@ class _ChatScreenState extends State<ChatScreen> {
   var isloggedin;
   var messageText;
   var _message;
+  final messageTextController = TextEditingController();
 
   @override
   void initState() {
@@ -26,18 +28,15 @@ class _ChatScreenState extends State<ChatScreen> {
     // ignore: deprecated_member_use
     _message = Firestore.instance.collection('messages');
 
-    // ignore: deprecated_member_use
-
-
-
-
   }
-  void getUserInfo() async {
+  void getUserInfo()  {
+
     try{
-      final user =  await _auth.currentUser;
+      final user =   _auth.currentUser;
       if(user != null){
         isloggedin = user;
-        print(isloggedin.email);
+
+
       }
     }catch(ex){
       print(ex);
@@ -62,22 +61,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
       }
     }
-
   }
-//  void _onPressed() {
-//    // ignore: deprecated_member_use
-//    _message.getDocuments().then((querySnapshot) {
-//      // ignore: deprecated_member_use
-//      querySnapshot.documents.forEach((result) {
-//        print(result.data()['sender']);
-//      });
-//    });
-//  }
+
 
 
 
   @override
   Widget build(BuildContext context) {
+    print(isloggedin.email);
     return Scaffold(
       appBar: AppBar(
         leading: null,
@@ -96,31 +87,7 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            StreamBuilder<QuerySnapshot>(
-              stream:_message.snapshots(),
-              builder: (context,snapshots){
-                if(!snapshots.hasData){
-                  return Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.lightBlueAccent,
-                      )
-                  );
-
-                }
-                  final messages = snapshots.data.documents;
-                  List<Text> messageWidgets = [];
-                  for(var message in messages){
-                    final messageText = message.data()['text'];
-                    final sender = message.data()['sender'];
-                    final messageWidget = Text('$messageText from $sender');
-                    messageWidgets.add(messageWidget);
-                  }
-                  return Column(
-                    children: messageWidgets,
-                  );
-
-              },
-            ),
+            MessageStream(message: _message),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -129,6 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                   Expanded(
                     child: TextField(
+                      controller: messageTextController,
                       onChanged: (value) {
                        messageText = value;
                       },
@@ -141,6 +109,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         'sender': isloggedin.email,
                         'text': messageText
                       });
+                      messageTextController.clear();
                     },
                     child: Text(
                       'Send',
@@ -156,3 +125,9 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
+
+
+
+
+
+
